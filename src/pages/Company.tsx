@@ -1,646 +1,487 @@
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Target, 
-  Eye, 
-  Heart, 
-  Users, 
-  Calendar, 
-  MapPin, 
-  Trophy,
-  Award,
-  ArrowRight,
-  Linkedin,
-  Twitter,
-  Github,
-  Mail,
-  Send,
-  FileText,
-  Building,
-  Globe,
-  Star
-} from "lucide-react";
 import { useState } from "react";
 
 const Company = () => {
-  const [formData, setFormData] = useState({
+  const [selectedJob, setSelectedJob] = useState<number | null>(null);
+  const [applicationForm, setApplicationForm] = useState({
     name: "",
     email: "",
     position: "",
-    coverLetter: "",
-    resume: null
+    resume: "",
+    coverLetter: ""
   });
 
-  const values = [
-    {
-      icon: Target,
-      title: "Innovation First",
-      description: "We constantly push boundaries to create cutting-edge solutions that transform how businesses operate."
-    },
-    {
-      icon: Users,
-      title: "Customer Success",
-      description: "Our customers' success is our success. We're committed to delivering exceptional value and support."
-    },
-    {
-      icon: Heart,
-      title: "Transparency",
-      description: "We believe in open communication, honest feedback, and building trust through transparency."
-    },
-    {
-      icon: Globe,
-      title: "Global Impact",
-      description: "We're building technology that makes a positive impact on businesses and communities worldwide."
-    }
-  ];
-
-  const team = [
+  const teamMembers = [
     {
       name: "Sarah Chen",
-      role: "CEO & Co-Founder",
-      bio: "Former VP of Engineering at TechCorp with 15+ years building scalable platforms. Stanford CS graduate passionate about automation.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b77c?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#",
-        twitter: "#"
-      }
+      position: "CEO & Co-Founder",
+      bio: "Former VP of Engineering at TechCorp with 15+ years building scalable data platforms. MIT Computer Science graduate passionate about democratizing data access.",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b8b5?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/sarahchen"
     },
     {
       name: "Michael Rodriguez",
-      role: "CTO & Co-Founder",
-      bio: "Ex-Google engineer specializing in distributed systems and AI. MIT PhD with expertise in machine learning and data infrastructure.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#",
-        github: "#"
-      }
+      position: "CTO & Co-Founder",
+      bio: "Ex-Google engineer specializing in machine learning and data infrastructure. Stanford PhD in Computer Science with expertise in distributed systems.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/michaelrodriguez"
     },
     {
-      name: "Dr. Jennifer Park",
-      role: "Head of AI Research",
-      bio: "Former researcher at DeepMind with 20+ publications in ML. Leading our AI initiatives and research partnerships.",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#",
-        twitter: "#"
-      }
+      name: "Dr. Emily Watson",
+      position: "Head of Data Science",
+      bio: "Former Amazon Principal Scientist with 12+ years in AI/ML. Berkeley PhD in Statistics, published researcher in data enrichment algorithms.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/emilywatson"
     },
     {
-      name: "David Thompson",
-      role: "VP of Product",
-      bio: "Product leader with experience at Salesforce and HubSpot. Expert in user experience and product strategy.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#"
-      }
+      name: "David Kim",
+      position: "VP of Engineering",
+      bio: "Previously led engineering teams at Stripe and Airbnb. Expert in building high-performance systems that process billions of data points daily.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/davidkim"
     },
     {
-      name: "Lisa Wong",
-      role: "Head of Customer Success",
-      bio: "Customer success expert with proven track record of driving adoption and retention at enterprise scale.",
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#",
-        twitter: "#"
-      }
+      name: "Jennifer Liu",
+      position: "VP of Sales",
+      bio: "Former Salesforce enterprise sales leader with 10+ years helping Fortune 500 companies optimize their data strategies and achieve growth.",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/jenniferliu"
     },
     {
-      name: "Robert Kim",
-      role: "VP of Engineering",
-      bio: "Infrastructure expert with experience scaling platforms to millions of users. Former tech lead at Netflix.",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face&auto=format",
-      social: {
-        linkedin: "#",
-        github: "#"
-      }
+      name: "Alex Thompson",
+      position: "Head of Product",
+      bio: "Ex-Microsoft product manager with deep expertise in enterprise software. Passionate about creating intuitive experiences for complex data workflows.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
+      linkedin: "https://linkedin.com/in/alexthompson"
     }
   ];
 
-  const timeline = [
+  const milestones = [
     {
       year: "2020",
       title: "Company Founded",
-      description: "Sarah and Michael start the company with a vision to democratize data automation.",
-      milestone: "Founded"
+      description: "DataFlow was founded by Sarah Chen and Michael Rodriguez with a vision to democratize data enrichment for businesses of all sizes."
     },
     {
       year: "2021",
-      title: "Seed Funding",
-      description: "Raised $5M seed round led by Sequoia Capital to build our MVP and initial team.",
-      milestone: "$5M Raised"
+      title: "Series A Funding",
+      description: "Raised $15M Series A led by Accel Partners to accelerate product development and expand our engineering team."
     },
     {
       year: "2022",
-      title: "Product Launch",
-      description: "Launched our platform publicly with 50+ integrations and gained first 1,000 customers.",
-      milestone: "1K Customers"
+      title: "1000+ Customers",
+      description: "Reached our first major milestone of 1,000 active customers, processing over 100M data points monthly."
     },
     {
       year: "2023",
-      title: "Series A",
-      description: "Secured $25M Series A to expand globally and enhance AI capabilities.",
-      milestone: "$25M Series A"
+      title: "SOC 2 Compliance",
+      description: "Achieved SOC 2 Type II certification, enabling us to serve enterprise customers with the highest security standards."
     },
     {
       year: "2024",
-      title: "Global Expansion",
-      description: "Opened offices in London and Singapore, reached 100,000+ active users.",
-      milestone: "100K Users"
+      title: "Series B & Global Expansion",
+      description: "Raised $45M Series B and expanded to serve customers across 50+ countries with 24/7 support."
     },
     {
       year: "2025",
-      title: "Enterprise Focus",
-      description: "Launched enterprise platform with advanced security and compliance features.",
-      milestone: "Enterprise Ready"
+      title: "AI-Powered Platform",
+      description: "Launched next-generation AI-powered data enrichment platform, processing 1B+ data points daily."
     }
   ];
 
-  const jobs = [
+  const jobListings = [
     {
-      title: "Senior Frontend Engineer",
+      id: 1,
+      title: "Senior Full Stack Engineer",
       department: "Engineering",
       location: "San Francisco, CA / Remote",
       type: "Full-time",
-      experience: "5+ years",
-      description: "Join our frontend team to build beautiful, performant user interfaces that delight our customers.",
-      requirements: ["React/TypeScript expertise", "Experience with modern tooling", "UX/UI design sensibility", "Remote collaboration skills"]
+      description: "Join our engineering team to build scalable data processing systems that handle billions of records. Work with React, Node.js, and distributed systems.",
+      requirements: ["5+ years full-stack development", "Experience with React/Node.js", "Distributed systems knowledge", "Bachelor's in CS or equivalent"]
     },
     {
-      title: "Product Manager",
-      department: "Product",
-      location: "San Francisco, CA",
-      type: "Full-time", 
-      experience: "3+ years",
-      description: "Drive product strategy and roadmap for our core automation platform.",
-      requirements: ["Product management experience", "Technical background", "Customer-focused mindset", "Data-driven approach"]
-    },
-    {
-      title: "Customer Success Manager",
-      department: "Customer Success",
+      id: 2,
+      title: "Data Scientist",
+      department: "Data Science",
       location: "New York, NY / Remote",
       type: "Full-time",
-      experience: "2+ years",
-      description: "Help our enterprise customers succeed with their automation initiatives.",
-      requirements: ["Customer success experience", "Technical aptitude", "Excellent communication", "Problem-solving skills"]
+      description: "Develop machine learning models to improve data quality and enrichment accuracy. Work with large datasets and cutting-edge AI technologies.",
+      requirements: ["PhD/MS in Data Science or related field", "Python/R proficiency", "Machine learning expertise", "Experience with large datasets"]
     },
     {
-      title: "DevOps Engineer",
-      department: "Engineering",
+      id: 3,
+      title: "Product Marketing Manager",
+      department: "Marketing",
+      location: "Austin, TX / Remote",
+      type: "Full-time",
+      description: "Drive go-to-market strategy for our enterprise data products. Work closely with sales and product teams to accelerate growth.",
+      requirements: ["5+ years product marketing", "B2B SaaS experience", "Enterprise sales knowledge", "Excellent communication skills"]
+    },
+    {
+      id: 4,
+      title: "Customer Success Manager",
+      department: "Customer Success",
       location: "Remote",
       type: "Full-time",
-      experience: "4+ years",
-      description: "Build and maintain our cloud infrastructure and deployment pipelines.",
-      requirements: ["AWS/GCP experience", "Kubernetes expertise", "CI/CD knowledge", "Security best practices"]
+      description: "Help enterprise customers maximize value from DataFlow. Build relationships and drive adoption across customer organizations.",
+      requirements: ["3+ years customer success", "Enterprise software experience", "Strong analytical skills", "Customer-first mindset"]
     }
   ];
 
   const awards = [
     {
-      year: "2024",
-      title: "Best Data Platform",
+      title: "Best Data Platform 2024",
       organization: "TechCrunch Awards",
-      description: "Recognized for innovation in data automation and user experience.",
-      icon: "🏆"
-    },
-    {
       year: "2024",
+      description: "Recognized for innovation in data enrichment and processing technology."
+    },
+    {
       title: "Fastest Growing Startup",
-      organization: "Forbes Cloud 100",
-      description: "Listed in Forbes Cloud 100 for exceptional growth and market impact.",
-      icon: "📈"
+      organization: "Inc. 5000",
+      year: "2024",
+      description: "Ranked #47 on Inc. 5000 list of fastest-growing private companies in America."
     },
     {
+      title: "AI Excellence Award",
+      organization: "AI Breakthrough",
       year: "2023",
-      title: "SOC 2 Type II Certified",
-      organization: "Security Compliance",
-      description: "Achieved enterprise-grade security certification for data protection.",
-      icon: "🔒"
+      description: "Honored for breakthrough achievements in AI-powered data processing."
     },
     {
+      title: "Enterprise Security Leader",
+      organization: "CyberSecurity Excellence",
       year: "2023",
-      title: "Customer Choice Award",
-      organization: "G2 Software Reviews",
-      description: "Highest rated platform in automation category based on customer reviews.",
-      icon: "⭐"
+      description: "Recognized for outstanding commitment to enterprise data security and compliance."
     }
   ];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleApplicationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Application submitted:", formData);
+    console.log("Application submitted:", applicationForm);
     // Handle form submission
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <main>
-        {/* Hero Section */}
-        <section className="relative section-padding overflow-hidden bg-gradient-to-br from-background via-muted/10 to-primary/5">
-          <div className="container-custom relative z-10">
-            <div className="text-center mb-16">
-              <Badge variant="secondary" className="mb-6">
-                About DataFlow
-              </Badge>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                Building the future of{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  data automation
-                </span>
-              </h1>
-              
-              <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto text-balance">
-                We're on a mission to democratize data automation and empower every business 
-                to unlock the full potential of their data.
-              </p>
+      
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+              About DataFlow
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              We're on a mission to democratize data enrichment and empower every business to make data-driven decisions
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-black hover:bg-gray-800">
+                Join Our Team
+              </Button>
+              <Button size="lg" variant="outline" className="border-black hover:bg-gray-100">
+                Our Story
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">300K+</div>
-                  <div className="text-sm text-muted-foreground">Active Users</div>
+      {/* Mission, Vision, Values */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Mission */}
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">50+</div>
-                  <div className="text-sm text-muted-foreground">Team Members</div>
+                <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+                <p className="text-muted-foreground">
+                  To democratize access to high-quality data enrichment tools, enabling businesses of all sizes to harness the power of their data for growth and innovation.
+                </p>
+              </div>
+
+              {/* Vision */}
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">$30M</div>
-                  <div className="text-sm text-muted-foreground">Funding Raised</div>
+                <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+                <p className="text-muted-foreground">
+                  To create a world where every business decision is powered by accurate, real-time data insights, making data enrichment as essential as email or internet connectivity.
+                </p>
+              </div>
+
+              {/* Values */}
+              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">99.9%</div>
-                  <div className="text-sm text-muted-foreground">Uptime SLA</div>
-                </div>
+                <h3 className="text-2xl font-bold mb-4">Our Values</h3>
+                <ul className="text-muted-foreground text-left space-y-2">
+                  <li>• Customer-first approach</li>
+                  <li>• Data privacy & security</li>
+                  <li>• Innovation & excellence</li>
+                  <li>• Transparency & trust</li>
+                </ul>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Mission, Vision, Values */}
-        <section className="section-padding">
-          <div className="container-custom">
-            <div className="grid lg:grid-cols-3 gap-12 mb-16">
-              <Card className="text-center">
-                <CardHeader>
-                  <Target className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle className="text-xl">Our Mission</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    To democratize data automation and make powerful workflow tools accessible 
-                    to businesses of all sizes, enabling them to focus on what matters most.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardHeader>
-                  <Eye className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle className="text-xl">Our Vision</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    A world where every business can harness the power of their data through 
-                    intelligent automation, driving innovation and growth across industries.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardHeader>
-                  <Heart className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <CardTitle className="text-xl">Our Promise</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    To build technology that not only solves problems but empowers people, 
-                    creates opportunities, and makes work more meaningful and productive.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Values */}
+      {/* Team Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Our Values</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                The principles that guide everything we do and shape our company culture.
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Meet Our Team
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                World-class talent building the future of data enrichment
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((value, index) => (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <CardHeader className="text-center">
-                    <value.icon className="h-8 w-8 text-primary mx-auto mb-3 group-hover:scale-110 transition-transform" />
-                    <CardTitle className="text-lg">{value.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground text-center">
-                      {value.description}
-                    </p>
-                  </CardContent>
-                </Card>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {teamMembers.map((member, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2">{member.name}</h3>
+                    <p className="text-black font-medium mb-3">{member.position}</p>
+                    <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
+                    <Button variant="outline" size="sm" className="border-black hover:bg-gray-100">
+                      LinkedIn
+                    </Button>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Timeline */}
-        <section className="section-padding bg-muted/20">
-          <div className="container-custom">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Our Journey</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                From a simple idea to a platform trusted by hundreds of thousands of users worldwide.
+      {/* Timeline Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Our Journey
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                From startup to industry leader - here's how we've grown
               </p>
             </div>
 
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-primary/20 h-full hidden md:block" />
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-black"></div>
               
               <div className="space-y-8">
-                {timeline.map((item, index) => (
-                  <div key={index} className={`flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} flex-col md:gap-8`}>
-                    <div className={`flex-1 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'} text-center md:text-inherit`}>
-                      <Card className="inline-block group hover:shadow-lg transition-all duration-300">
-                        <CardContent className="p-6">
-                          <Badge variant="outline" className="mb-3">{item.milestone}</Badge>
-                          <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                          <p className="text-muted-foreground mb-3">{item.description}</p>
-                          <div className="text-sm font-medium text-primary">{item.year}</div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                    
+                {milestones.map((milestone, index) => (
+                  <div key={index} className="relative flex items-start">
                     {/* Timeline Dot */}
-                    <div className="relative z-10 hidden md:block">
-                      <div className="w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg" />
+                    <div className="relative z-10 w-16 h-16 bg-black rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                      {milestone.year}
                     </div>
                     
-                    <div className="flex-1" />
+                    {/* Content */}
+                    <div className="ml-8 bg-white rounded-xl shadow-lg p-6 flex-1">
+                      <h3 className="text-xl font-bold mb-3">{milestone.title}</h3>
+                      <p className="text-muted-foreground">{milestone.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Team */}
-        <section className="section-padding">
-          <div className="container-custom">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Passionate individuals from diverse backgrounds united by a shared vision to transform how businesses work with data.
+      {/* Careers Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Join Our Team
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                We're looking for talented individuals to help us shape the future of data
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {team.map((member, index) => (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <CardHeader className="text-center">
-                    <div className="relative w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full">
-                      <img 
-                        src={member.image} 
-                        alt={member.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                        onError={(e) => {
-                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&size=400&background=random`;
-                        }}
-                      />
-                    </div>
-                    <CardTitle className="text-xl">{member.name}</CardTitle>
-                    <CardDescription className="text-primary font-medium">
-                      {member.role}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4 text-center">
-                      {member.bio}
-                    </p>
-                    <div className="flex justify-center gap-3">
-                      {member.social.linkedin && (
-                        <Button variant="ghost" size="sm" className="p-2">
-                          <Linkedin className="h-4 w-4" />
-                        </Button>
-                      )}
-                      {member.social.twitter && (
-                        <Button variant="ghost" size="sm" className="p-2">
-                          <Twitter className="h-4 w-4" />
-                        </Button>
-                      )}
-                      {member.social.github && (
-                        <Button variant="ghost" size="sm" className="p-2">
-                          <Github className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Careers */}
-        <section className="section-padding bg-muted/20">
-          <div className="container-custom">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Join Our Team</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We're always looking for talented individuals who share our passion for innovation and want to make a meaningful impact.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-12">
+            <div className="grid lg:grid-cols-2 gap-8">
               {/* Job Listings */}
               <div>
                 <h3 className="text-2xl font-bold mb-6">Open Positions</h3>
                 <div className="space-y-4">
-                  {jobs.map((job, index) => (
-                    <Card key={index} className="group hover:shadow-lg transition-all duration-300">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                              {job.title}
-                            </CardTitle>
-                            <CardDescription className="flex items-center gap-4 mt-2">
-                              <span>{job.department}</span>
-                              <span className="flex items-center gap-1">
-                                <MapPin className="h-3 w-3" />
-                                {job.location}
-                              </span>
-                            </CardDescription>
-                          </div>
-                          <div className="text-right">
-                            <Badge variant="outline">{job.type}</Badge>
-                            <div className="text-xs text-muted-foreground mt-1">{job.experience}</div>
-                          </div>
+                  {jobListings.map((job) => (
+                    <div
+                      key={job.id}
+                      className={`bg-white rounded-lg shadow-md p-6 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                        selectedJob === job.id ? 'border-2 border-black' : 'border border-gray-200'
+                      }`}
+                      onClick={() => setSelectedJob(selectedJob === job.id ? null : job.id)}
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h4 className="text-lg font-bold">{job.title}</h4>
+                          <p className="text-muted-foreground text-sm">{job.department} • {job.location}</p>
                         </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground mb-4">{job.description}</p>
-                        <div className="mb-4">
-                          <h4 className="font-medium text-sm mb-2">Requirements:</h4>
-                          <ul className="text-xs text-muted-foreground space-y-1">
-                            {job.requirements.map((req, reqIndex) => (
-                              <li key={reqIndex} className="flex items-center gap-2">
-                                <div className="w-1 h-1 bg-primary rounded-full" />
-                                {req}
-                              </li>
-                            ))}
-                          </ul>
+                        <span className="bg-black text-white px-3 py-1 rounded text-sm">{job.type}</span>
+                      </div>
+                      
+                      {selectedJob === job.id && (
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <p className="text-muted-foreground mb-4">{job.description}</p>
+                          <div className="mb-4">
+                            <h5 className="font-semibold mb-2">Requirements:</h5>
+                            <ul className="space-y-1">
+                              {job.requirements.map((req, index) => (
+                                <li key={index} className="text-sm text-muted-foreground">• {req}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <Button size="sm" className="bg-black hover:bg-gray-800">
+                            Apply Now
+                          </Button>
                         </div>
-                        <Button className="w-full group-hover:scale-105 transition-transform">
-                          Apply Now
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
 
               {/* Application Form */}
               <div>
-                <h3 className="text-2xl font-bold mb-6">Quick Apply</h3>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Submit Your Application</CardTitle>
-                    <CardDescription>
-                      Interested in joining our team? Send us your information and we'll get back to you.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Full Name</label>
-                          <Input
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="John Doe"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Email</label>
-                          <Input
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            placeholder="john@example.com"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">Position of Interest</label>
-                        <Input
-                          name="position"
-                          value={formData.position}
-                          onChange={handleInputChange}
-                          placeholder="e.g., Senior Frontend Engineer"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">Cover Letter</label>
-                        <Textarea
-                          name="coverLetter"
-                          value={formData.coverLetter}
-                          onChange={handleInputChange}
-                          placeholder="Tell us why you'd be a great fit for our team..."
-                          rows={4}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">Resume/CV</label>
-                        <Input
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          className="cursor-pointer"
-                        />
-                      </div>
-                      <Button type="submit" className="w-full">
-                        <Send className="mr-2 h-4 w-4" />
-                        Submit Application
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
+                <h3 className="text-2xl font-bold mb-6">Apply Today</h3>
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <form onSubmit={handleApplicationSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Full Name</label>
+                      <input
+                        type="text"
+                        value={applicationForm.name}
+                        onChange={(e) => setApplicationForm({...applicationForm, name: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Email</label>
+                      <input
+                        type="email"
+                        value={applicationForm.email}
+                        onChange={(e) => setApplicationForm({...applicationForm, email: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Position</label>
+                      <select
+                        value={applicationForm.position}
+                        onChange={(e) => setApplicationForm({...applicationForm, position: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        required
+                      >
+                        <option value="">Select a position</option>
+                        {jobListings.map((job) => (
+                          <option key={job.id} value={job.title}>{job.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Resume URL</label>
+                      <input
+                        type="url"
+                        value={applicationForm.resume}
+                        onChange={(e) => setApplicationForm({...applicationForm, resume: e.target.value})}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        placeholder="https://..."
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Cover Letter</label>
+                      <textarea
+                        value={applicationForm.coverLetter}
+                        onChange={(e) => setApplicationForm({...applicationForm, coverLetter: e.target.value})}
+                        rows={4}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                        placeholder="Tell us why you'd be a great fit..."
+                        required
+                      />
+                    </div>
+                    
+                    <Button type="submit" className="w-full bg-black hover:bg-gray-800">
+                      Submit Application
+                    </Button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Awards & Press */}
-        <section className="section-padding">
-          <div className="container-custom">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Recognition & Awards</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We're honored to be recognized by industry leaders and organizations for our innovation and impact.
+      {/* Awards & Press */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Awards & Recognition
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Industry recognition for our innovation and excellence
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {awards.map((award, index) => (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="text-3xl">{award.icon}</div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-bold">{award.title}</h3>
-                          <Badge variant="outline">{award.year}</Badge>
-                        </div>
-                        <p className="text-sm font-medium text-primary mb-2">{award.organization}</p>
-                        <p className="text-sm text-muted-foreground">{award.description}</p>
-                      </div>
+                <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 010 2h2a1 1 0 011 1v2a1 1 0 01-2 0V6h-2a1 1 0 010-2h1V3a1 1 0 011-1zm7 5a1 1 0 110 2h-1v1a1 1 0 11-2 0V9h-1a1 1 0 110-2h1V6a1 1 0 112 0v1h1z" clipRule="evenodd" />
+                      </svg>
                     </div>
-                  </CardContent>
-                </Card>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">{award.title}</h3>
+                      <p className="text-black font-medium mb-2">{award.organization} • {award.year}</p>
+                      <p className="text-muted-foreground text-sm">{award.description}</p>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-
-            <div className="text-center mt-12">
-              <Card className="inline-block">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-2">Media Inquiries</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Interested in learning more about our story or speaking with our team?
-                  </p>
-                  <Button>
-                    <Mail className="mr-2 h-4 w-4" />
-                    Contact Press Team
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

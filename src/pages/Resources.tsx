@@ -1,563 +1,423 @@
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { 
-  Search, 
-  BookOpen, 
-  Download, 
-  Play, 
-  Calendar, 
-  Clock, 
-  User,
-  FileText,
-  Video,
-  HelpCircle,
-  ArrowRight,
-  Filter,
-  Tag
-} from "lucide-react";
 import { useState } from "react";
 
 const Resources = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const blogPosts = [
+  const blogArticles = [
     {
       id: 1,
-      title: "10 Data Automation Best Practices for 2024",
-      excerpt: "Discover the essential strategies that leading companies use to maximize their data automation ROI and streamline operations.",
-      author: "Sarah Chen",
-      date: "Dec 15, 2024",
+      title: "10 Data Enrichment Strategies That Drive Revenue",
+      excerpt: "Learn how top companies use data enrichment to boost their sales pipeline and increase conversion rates by 300%.",
+      category: "Strategy",
       readTime: "8 min read",
-      category: "Best Practices",
-      image: "📊",
-      tags: ["Automation", "Data", "Best Practices"]
+      date: "Dec 15, 2024",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop"
     },
     {
       id: 2,
-      title: "Complete Guide to CRM Integration",
-      excerpt: "Learn how to seamlessly connect your CRM with other business tools for a unified customer experience.",
-      author: "Michael Rodriguez",
-      date: "Dec 12, 2024",
+      title: "GDPR Compliance in Data Processing: A Complete Guide",
+      excerpt: "Everything you need to know about staying compliant while processing customer data in 2024.",
+      category: "Compliance",
       readTime: "12 min read",
-      category: "Integration",
-      image: "🔗",
-      tags: ["CRM", "Integration", "Sales"]
+      date: "Dec 10, 2024",
+      image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=250&fit=crop"
     },
     {
       id: 3,
-      title: "AI-Powered Lead Scoring: A Deep Dive",
-      excerpt: "Understand how machine learning algorithms can transform your lead qualification process and boost conversion rates.",
-      author: "Dr. Jennifer Park",
-      date: "Dec 10, 2024",
-      readTime: "15 min read",
-      category: "AI & ML",
-      image: "🤖",
-      tags: ["AI", "Lead Scoring", "Machine Learning"]
+      title: "AI-Powered Lead Scoring: Best Practices",
+      excerpt: "Discover how machine learning can transform your lead qualification process and boost sales efficiency.",
+      category: "AI & Machine Learning",
+      readTime: "6 min read",
+      date: "Dec 5, 2024",
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop"
     },
     {
       id: 4,
-      title: "Security & Compliance in Data Automation",
-      excerpt: "Essential security practices and compliance requirements for automated data workflows in enterprise environments.",
-      author: "Robert Kim",
-      date: "Dec 8, 2024",
+      title: "Building Scalable Data Pipelines for Startups",
+      excerpt: "A step-by-step guide to setting up robust data infrastructure without breaking the bank.",
+      category: "Technical",
       readTime: "10 min read",
-      category: "Security",
-      image: "🔒",
-      tags: ["Security", "Compliance", "Enterprise"]
-    },
-    {
-      id: 5,
-      title: "ROI Calculator: Measuring Automation Success",
-      excerpt: "A comprehensive framework for calculating and demonstrating the return on investment of your automation initiatives.",
-      author: "Lisa Wong",
-      date: "Dec 5, 2024",
-      readTime: "6 min read",
-      category: "Business Value",
-      image: "💰",
-      tags: ["ROI", "Business Value", "Metrics"]
-    },
-    {
-      id: 6,
-      title: "Building Your First Workflow: Step-by-Step",
-      excerpt: "A beginner-friendly tutorial that walks you through creating your first automated workflow from start to finish.",
-      author: "David Thompson",
-      date: "Dec 3, 2024",
-      readTime: "7 min read",
-      category: "Tutorial",
-      image: "🚀",
-      tags: ["Tutorial", "Beginner", "Workflow"]
+      date: "Nov 28, 2024",
+      image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=250&fit=crop"
     }
   ];
 
-  const downloadableResources = [
+  const downloadableGuides = [
     {
-      title: "The Complete Data Automation Playbook",
-      description: "A comprehensive 50-page guide covering strategy, implementation, and optimization of data automation workflows.",
-      type: "eBook",
-      pages: "50 pages",
-      format: "PDF",
-      category: "Strategy",
-      downloads: "12.5K",
-      image: "📚"
+      title: "The Complete Data Enrichment Handbook",
+      description: "130-page comprehensive guide covering everything from data collection to implementation.",
+      type: "PDF Guide",
+      pages: "130 pages",
+      downloads: "2.3K downloads"
     },
     {
-      title: "Enterprise Integration Checklist",
-      description: "Essential checklist for planning and executing large-scale data integrations in enterprise environments.",
+      title: "GDPR Compliance Checklist",
+      description: "Step-by-step checklist to ensure your data processing meets GDPR requirements.",
       type: "Checklist",
-      pages: "8 pages",
-      format: "PDF",
-      category: "Enterprise",
-      downloads: "8.2K",
-      image: "✅"
+      pages: "12 pages",
+      downloads: "1.8K downloads"
     },
     {
-      title: "ROI Calculator Template",
-      description: "Spreadsheet template for calculating the return on investment of your automation projects with real examples.",
-      type: "Template",
-      pages: "Excel",
-      format: "XLSX",
-      category: "Business Value",
-      downloads: "15.3K",
-      image: "📊"
+      title: "Sales Data Analytics Playbook",
+      description: "Proven strategies and templates to analyze and optimize your sales data.",
+      type: "Playbook",
+      pages: "85 pages",
+      downloads: "3.1K downloads"
     },
     {
       title: "API Integration Best Practices",
-      description: "Technical whitepaper covering API design patterns, security considerations, and performance optimization.",
-      type: "Whitepaper",
-      pages: "32 pages",
-      format: "PDF",
-      category: "Technical",
-      downloads: "6.8K",
-      image: "🔧"
-    },
-    {
-      title: "Compliance Framework Guide",
-      description: "Detailed guide for maintaining SOC 2, GDPR, and HIPAA compliance in automated data workflows.",
-      type: "Guide",
-      pages: "28 pages",
-      format: "PDF",
-      category: "Compliance",
-      downloads: "9.1K",
-      image: "🛡️"
-    },
-    {
-      title: "Workflow Templates Library",
-      description: "Collection of 25+ pre-built workflow templates for common business processes across industries.",
-      type: "Templates",
-      pages: "Bundle",
-      format: "JSON",
-      category: "Templates",
-      downloads: "22.4K",
-      image: "📁"
+      description: "Technical guide for developers on integrating DataFlow with your existing systems.",
+      type: "Technical Guide",
+      pages: "45 pages",
+      downloads: "950 downloads"
     }
   ];
 
-  const videoResources = [
+  const webinars = [
     {
-      title: "Getting Started with Data Automation",
-      description: "Learn the fundamentals of data automation and how to build your first workflow in under 30 minutes.",
-      duration: "28:45",
-      views: "45.2K",
-      category: "Getting Started",
-      level: "Beginner",
-      image: "🎬",
-      type: "Tutorial"
+      title: "Mastering B2B Data Enrichment in 2024",
+      presenter: "Sarah Chen, VP of Marketing at TechCorp",
+      duration: "45 mins",
+      views: "1.2K views",
+      date: "Live on Dec 20, 2024",
+      thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=225&fit=crop",
+      isLive: true
     },
     {
-      title: "Advanced Workflow Patterns",
-      description: "Deep dive into complex workflow patterns including conditional logic, error handling, and parallel processing.",
-      duration: "52:30",
-      views: "18.7K",
-      category: "Advanced",
-      level: "Expert",
-      image: "🔄",
-      type: "Tutorial"
+      title: "From Data Chaos to Pipeline Perfection",
+      presenter: "Mike Rodriguez, Data Engineering Lead",
+      duration: "38 mins",
+      views: "2.8K views",
+      date: "Dec 8, 2024",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=225&fit=crop",
+      isLive: false
     },
     {
-      title: "Customer Success: TechCorp Case Study",
-      description: "See how TechCorp achieved 300% productivity gains through strategic automation implementation.",
-      duration: "35:20",
-      views: "12.3K",
-      category: "Case Study",
-      level: "All Levels",
-      image: "🏢",
-      type: "Case Study"
+      title: "AI-Driven Sales Intelligence Deep Dive",
+      presenter: "Dr. Emily Watson, Head of Data Science",
+      duration: "52 mins",
+      views: "3.5K views",
+      date: "Nov 15, 2024",
+      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop",
+      isLive: false
     },
     {
-      title: "Weekly Product Demo",
-      description: "Live demonstration of new features and capabilities, including Q&A with our product team.",
-      duration: "45:00",
-      views: "8.9K",
-      category: "Product Demo",
-      level: "All Levels",
-      image: "📺",
-      type: "Webinar"
-    },
-    {
-      title: "Security Best Practices Webinar",
-      description: "Comprehensive overview of security considerations for enterprise data automation implementations.",
-      duration: "41:15",
-      views: "15.6K",
-      category: "Security",
-      level: "Intermediate",
-      image: "🔐",
-      type: "Webinar"
-    },
-    {
-      title: "API Integration Masterclass",
-      description: "Technical deep dive into API integrations, webhooks, and real-time data synchronization strategies.",
-      duration: "67:30",
-      views: "9.8K",
-      category: "Technical",
-      level: "Advanced",
-      image: "⚡",
-      type: "Masterclass"
+      title: "Enterprise Data Security & Compliance",
+      presenter: "Jennifer Liu, Chief Security Officer",
+      duration: "41 mins",
+      views: "1.9K views",
+      date: "Nov 2, 2024",
+      thumbnail: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=225&fit=crop",
+      isLive: false
     }
   ];
 
   const faqs = [
     {
-      question: "How do I get started with the platform?",
-      answer: "Getting started is easy! Sign up for a free trial, choose from our pre-built templates, or follow our step-by-step onboarding guide. Our support team is also available to help you set up your first workflow."
+      question: "How does DataFlow ensure data privacy and security?",
+      answer: "We implement enterprise-grade security measures including SOC 2 Type II compliance, end-to-end encryption, and GDPR/CCPA compliance. All data is processed in secure, audited environments with strict access controls."
     },
     {
-      question: "What integrations are available?",
-      answer: "We support 200+ integrations including popular CRMs (Salesforce, HubSpot), databases (MySQL, PostgreSQL), cloud services (AWS, Google Cloud), and business tools (Slack, Teams, Jira). You can also create custom integrations using our REST API."
+      question: "What data sources can I connect to DataFlow?",
+      answer: "DataFlow supports 100+ data sources including CRMs (Salesforce, HubSpot), databases (PostgreSQL, MySQL), cloud storage (AWS S3, Google Cloud), and APIs. We also provide custom integration support for enterprise clients."
     },
     {
-      question: "Is my data secure?",
-      answer: "Yes, security is our top priority. We maintain SOC 2 Type II compliance, use end-to-end encryption, and offer enterprise features like SSO, role-based access control, and audit logs. Your data is always encrypted both in transit and at rest."
+      question: "How accurate is the data enrichment?",
+      answer: "Our data enrichment achieves 95%+ accuracy through multiple data sources, AI validation, and real-time verification. We provide confidence scores for each data point and offer a data accuracy guarantee."
     },
     {
-      question: "How much does it cost?",
-      answer: "We offer flexible pricing plans starting from $49/month for small teams, with enterprise plans available for larger organizations. All plans include a 14-day free trial with no credit card required."
+      question: "Can I try DataFlow before purchasing?",
+      answer: "Yes! We offer a 14-day free trial with full access to all features. No credit card required. You can process up to 1,000 records during the trial period."
     },
     {
-      question: "Can I migrate from another automation platform?",
-      answer: "Absolutely! We provide migration tools and dedicated support to help you transition from platforms like Zapier, Microsoft Power Automate, or custom solutions. Our team will work with you to ensure a smooth migration."
+      question: "What kind of support do you provide?",
+      answer: "We offer 24/7 email support for all plans, priority support for Professional plans, and dedicated customer success managers for Enterprise clients. We also provide comprehensive documentation and video tutorials."
     },
     {
-      question: "What kind of support do you offer?",
-      answer: "We offer multiple support channels including email support, live chat, comprehensive documentation, video tutorials, and community forums. Enterprise customers also get dedicated account managers and priority support."
+      question: "How does pricing work?",
+      answer: "Pricing is based on the number of records processed per month. We offer three main plans: Starter ($29/month for 1K records), Professional ($99/month for 10K records), and custom Enterprise pricing for unlimited usage."
     },
     {
-      question: "Do you offer training and onboarding?",
-      answer: "Yes! We provide comprehensive onboarding for all customers, including live training sessions, documentation, video tutorials, and best practice guides. Enterprise customers receive dedicated training and implementation support."
+      question: "Can I cancel my subscription anytime?",
+      answer: "Yes, you can cancel your subscription at any time. There are no long-term contracts or cancellation fees. Your data remains accessible during your billing period even after cancellation."
     },
     {
-      question: "Can I customize workflows for my specific needs?",
-      answer: "Definitely! Our platform is designed to be highly customizable. You can build custom workflows using our visual builder, create custom integrations via API, and even develop custom functions for specialized business logic."
-    },
-    {
-      question: "What happens if I exceed my plan limits?",
-      answer: "We'll notify you before you reach your limits and offer options to upgrade your plan. We never stop your workflows unexpectedly - you'll always have time to adjust your usage or upgrade as needed."
-    },
-    {
-      question: "Is there a mobile app?",
-      answer: "While we don't have a dedicated mobile app yet, our web platform is fully responsive and works great on mobile devices. You can monitor workflows, receive notifications, and perform basic management tasks from any device."
+      question: "Do you offer custom integrations?",
+      answer: "Yes, we provide custom integration development for Enterprise clients. Our technical team can work with you to build specific connectors or modify existing integrations to meet your unique requirements."
     }
   ];
 
-  const filteredBlogs = blogPosts.filter(post => 
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const categories = ["all", "Strategy", "Technical", "Compliance", "AI & Machine Learning"];
 
-  const filteredResources = downloadableResources.filter(resource =>
-    resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    resource.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    resource.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const filteredVideos = videoResources.filter(video =>
-    video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    video.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredArticles = blogArticles.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = activeCategory === "all" || article.category === activeCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <main>
-        {/* Hero Section */}
-        <section className="relative section-padding overflow-hidden bg-gradient-to-br from-background via-muted/10 to-primary/5">
-          <div className="container-custom relative z-10">
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-6">
-                Knowledge Hub
-              </Badge>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-                Learn, grow, and{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  succeed together
-                </span>
-              </h1>
-              
-              <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto text-balance">
-                Access our comprehensive library of guides, tutorials, case studies, and best practices 
-                to maximize your automation success.
-              </p>
-
-              {/* Search Bar */}
-              <div className="relative max-w-2xl mx-auto mb-8">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                <Input
-                  placeholder="Search resources, guides, tutorials..."
+      
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+              Resources & Knowledge Base
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Everything you need to master data enrichment, from beginner guides to advanced techniques
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto relative mb-8">
+              <div className="relative">
+                <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search articles, guides, webinars..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-4 py-3 text-lg border-2 hover:border-primary/50 focus:border-primary"
+                  className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent shadow-lg"
                 />
               </div>
+            </div>
 
-              {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">50+</div>
-                  <div className="text-sm text-muted-foreground">Articles</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">25+</div>
-                  <div className="text-sm text-muted-foreground">Guides</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">30+</div>
-                  <div className="text-sm text-muted-foreground">Videos</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">100K+</div>
-                  <div className="text-sm text-muted-foreground">Downloads</div>
-                </div>
-              </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-black hover:bg-gray-800">
+                Browse All Resources
+              </Button>
+              <Button size="lg" variant="outline" className="border-black hover:bg-gray-100">
+                Join Our Newsletter
+              </Button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Main Content */}
-        <section className="section-padding">
-          <div className="container-custom">
-            <Tabs defaultValue="articles" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-                <TabsTrigger value="articles" className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  <span className="hidden sm:inline">Articles</span>
-                </TabsTrigger>
-                <TabsTrigger value="downloads" className="flex items-center gap-2">
-                  <Download className="h-4 w-4" />
-                  <span className="hidden sm:inline">Downloads</span>
-                </TabsTrigger>
-                <TabsTrigger value="videos" className="flex items-center gap-2">
-                  <Video className="h-4 w-4" />
-                  <span className="hidden sm:inline">Videos</span>
-                </TabsTrigger>
-                <TabsTrigger value="faq" className="flex items-center gap-2">
-                  <HelpCircle className="h-4 w-4" />
-                  <span className="hidden sm:inline">FAQ</span>
-                </TabsTrigger>
-              </TabsList>
+      {/* Blog Articles Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-3xl font-bold text-foreground">Latest Articles</h2>
+              
+              {/* Category Filter */}
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setActiveCategory(category)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      activeCategory === category
+                        ? 'bg-black text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {category === "all" ? "All Categories" : category}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-              {/* Articles Tab */}
-              <TabsContent value="articles">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Latest Articles & Insights</h2>
-                  <p className="text-muted-foreground">
-                    Stay up-to-date with the latest trends, best practices, and insights from our team and industry experts.
-                  </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+              {filteredArticles.map((article) => (
+                <div key={article.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                      <span className="bg-black text-white px-2 py-1 rounded">{article.category}</span>
+                      <span>{article.readTime}</span>
+                      <span>{article.date}</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 hover:text-gray-600 cursor-pointer">
+                      {article.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-4">{article.excerpt}</p>
+                    <Button variant="outline" size="sm" className="border-black hover:bg-gray-100">
+                      Read Article
+                    </Button>
+                  </div>
                 </div>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredBlogs.map((post) => (
-                    <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-                      <CardHeader>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-2xl">{post.image}</div>
-                          <Badge variant="outline">{post.category}</Badge>
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                          {post.title}
-                        </CardTitle>
-                        <CardDescription className="line-clamp-3">
-                          {post.excerpt}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                          <div className="flex items-center gap-2">
-                            <User className="h-3 w-3" />
-                            {post.author}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-3 w-3" />
-                            {post.readTime}
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-wrap gap-1">
-                            {post.tags.slice(0, 2).map((tag, index) => (
-                              <Badge key={index} variant="secondary" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                          <Button variant="ghost" size="sm" className="group-hover:bg-primary/5">
-                            Read More
-                            <ArrowRight className="ml-1 h-3 w-3" />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-              {/* Downloads Tab */}
-              <TabsContent value="downloads">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Downloadable Resources</h2>
-                  <p className="text-muted-foreground">
-                    Free guides, templates, and tools to help you succeed with data automation.
-                  </p>
-                </div>
+      {/* Downloadable Guides Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-foreground mb-4">Downloadable Guides</h2>
+              <p className="text-xl text-muted-foreground">
+                In-depth resources to help you implement and optimize your data strategy
+              </p>
+            </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredResources.map((resource, index) => (
-                    <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <CardHeader>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-2xl">{resource.image}</div>
-                          <div className="flex gap-2">
-                            <Badge variant="outline">{resource.type}</Badge>
-                            <Badge variant="secondary">{resource.category}</Badge>
-                          </div>
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-colors">
-                          {resource.title}
-                        </CardTitle>
-                        <CardDescription>
-                          {resource.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                          <div className="flex items-center gap-4">
-                            <span>{resource.pages}</span>
-                            <span>{resource.format}</span>
-                          </div>
-                          <span>{resource.downloads} downloads</span>
-                        </div>
-                        <Button className="w-full group-hover:scale-105 transition-transform">
-                          <Download className="mr-2 h-4 w-4" />
+            <div className="grid md:grid-cols-2 gap-8">
+              {downloadableGuides.map((guide, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-black rounded-lg flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
+                      📊
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="bg-gray-100 text-black px-2 py-1 rounded text-sm font-medium">
+                          {guide.type}
+                        </span>
+                        <span className="text-sm text-muted-foreground">{guide.pages}</span>
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{guide.title}</h3>
+                      <p className="text-muted-foreground mb-4">{guide.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">{guide.downloads}</span>
+                        <Button size="sm" className="bg-black hover:bg-gray-800">
                           Download Free
                         </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              {/* Videos Tab */}
-              <TabsContent value="videos">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Video Library</h2>
-                  <p className="text-muted-foreground">
-                    Learn through video tutorials, webinars, and case studies from our experts and customers.
-                  </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredVideos.map((video, index) => (
-                    <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer">
-                      <CardHeader>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-2xl">{video.image}</div>
-                          <div className="flex gap-2">
-                            <Badge variant="outline">{video.type}</Badge>
-                            <Badge variant="secondary">{video.level}</Badge>
-                          </div>
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                          {video.title}
-                        </CardTitle>
-                        <CardDescription className="line-clamp-3">
-                          {video.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-3 w-3" />
-                            {video.duration}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Play className="h-3 w-3" />
-                            {video.views} views
-                          </div>
-                        </div>
-                        <Button variant="outline" className="w-full group-hover:bg-primary/5">
-                          <Play className="mr-2 h-4 w-4" />
-                          Watch Now
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-
-              {/* FAQ Tab */}
-              <TabsContent value="faq">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
-                  <p className="text-muted-foreground">
-                    Find answers to common questions about our platform, features, and pricing.
-                  </p>
-                </div>
-
-                <div className="max-w-4xl mx-auto">
-                  <Accordion type="single" collapsible className="w-full space-y-4">
-                    {faqs.map((faq, index) => (
-                      <AccordionItem key={index} value={`item-${index}`} className="border border-border rounded-lg px-6">
-                        <AccordionTrigger className="text-left hover:text-primary transition-colors">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground pt-2 pb-6">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-
-                <div className="text-center mt-12">
-                  <Card className="inline-block">
-                    <CardContent className="p-6">
-                      <h3 className="text-lg font-semibold mb-2">Still have questions?</h3>
-                      <p className="text-muted-foreground mb-4">
-                        Our support team is here to help you succeed.
-                      </p>
-                      <div className="flex gap-3 justify-center">
-                        <Button>Contact Support</Button>
-                        <Button variant="outline">Join Community</Button>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+              ))}
+            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      {/* Webinars Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-foreground mb-4">Webinars & Video Library</h2>
+              <p className="text-xl text-muted-foreground">
+                Learn from industry experts and DataFlow specialists
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {webinars.map((webinar, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative">
+                    <img
+                      src={webinar.thumbnail}
+                      alt={webinar.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    {webinar.isLive && (
+                      <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        LIVE
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                      <span>{webinar.duration}</span>
+                      <span>{webinar.views}</span>
+                      <span>{webinar.date}</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{webinar.title}</h3>
+                    <p className="text-muted-foreground mb-4">{webinar.presenter}</p>
+                    <Button variant="outline" size="sm" className="border-black hover:bg-gray-100">
+                      {webinar.isLive ? "Register Now" : "Watch Recording"}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-foreground mb-4">Frequently Asked Questions</h2>
+              <p className="text-xl text-muted-foreground">
+                Find answers to common questions about DataFlow
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <span className="font-semibold text-lg">{faq.question}</span>
+                    <svg
+                      className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                        openFaq === index ? 'transform rotate-180' : ''
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {openFaq === index && (
+                    <div className="px-6 pb-4">
+                      <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section className="py-20 bg-gradient-to-r from-gray-800 to-black text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Stay Updated with the Latest Resources
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Get weekly insights, new guides, and exclusive content delivered to your inbox
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg text-black"
+              />
+              <Button size="lg" className="bg-white text-black hover:bg-gray-100">
+                Subscribe
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

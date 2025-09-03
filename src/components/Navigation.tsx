@@ -1,48 +1,54 @@
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navLinks = [
-    { href: "/product", label: "Product" },
-    { href: "/solutions", label: "Solutions" },
-    { href: "/resources", label: "Resources" },
-    { href: "/company", label: "Company" },
-    { href: "/enterprise", label: "Enterprise" },
-    { href: "/pricing", label: "Pricing" },
-  ];
-
-  const closeMobileMenu = () => setIsOpen(false);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border animate-slide-in-left">
       <div className="container-custom">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-8">
-            <Link to="/" className="font-bold text-xl text-foreground hover:text-primary transition-colors duration-300">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo - Always visible on the left */}
+          <div className="flex items-center">
+            <Link to="/" className="font-bold text-xl text-foreground hover:text-primary transition-colors duration-300 flex-shrink-0">
               DataFlow
             </Link>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.href}
-                  to={link.href} 
-                  className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group"
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ))}
-            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            <Link to="/product" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Product
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link to="/solutions" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Solutions
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link to="/resources" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Resources
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link to="/company" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Company
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link to="/enterprise" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Enterprise
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link to="/pricing" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+              Pricing
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </div>
           
-          {/* Desktop CTA Buttons */}
+          {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
               <Button variant="ghost" className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-primary/5">
@@ -52,14 +58,14 @@ const Navigation = () => {
             <Button 
               variant="outline" 
               size="sm" 
-              className="border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 hover:shadow-md"
+              className="border-black hover:border-gray-600 hover:bg-gray-100 transition-all duration-300 hover:shadow-md"
             >
               Get a demo
             </Button>
             <Link to="/signup">
               <Button 
                 size="sm" 
-                className="bg-primary hover:bg-primary-hover transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
+                className="bg-black hover:bg-gray-800 text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
                 Sign up
               </Button>
@@ -68,90 +74,74 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="p-2"
-                  aria-label="Toggle menu"
-                >
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0">
-                <div className="flex flex-col h-full">
-                  {/* Header */}
-                  <div className="flex items-center justify-between p-6 border-b">
-                    <Link 
-                      to="/" 
-                      className="font-bold text-xl text-foreground"
-                      onClick={closeMobileMenu}
-                    >
-                      DataFlow
-                    </Link>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={closeMobileMenu}
-                      className="p-2"
-                    >
-                      <X className="h-5 w-5" />
-                    </Button>
-                  </div>
-
-                  {/* Navigation Links */}
-                  <div className="flex-1 px-6 py-6">
-                    <div className="space-y-4 mb-8">
-                      {navLinks.map((link) => (
-                        <Link
-                          key={link.href}
-                          to={link.href}
-                          className="block py-3 px-4 text-lg font-medium text-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-300"
-                          onClick={closeMobileMenu}
-                        >
-                          {link.label}
-                        </Link>
-                      ))}
-                    </div>
-
-                    {/* Mobile CTA Buttons */}
-                    <div className="space-y-4">
-                      <Link to="/login" onClick={closeMobileMenu}>
-                        <Button 
-                          variant="outline" 
-                          className="w-full py-3 text-lg font-medium border-2 hover:border-primary/50 hover:bg-primary/5"
-                        >
-                          Login
-                        </Button>
-                      </Link>
-                      <Button 
-                        variant="outline" 
-                        className="w-full py-3 text-lg font-medium border-2 hover:border-primary/50 hover:bg-primary/5"
-                      >
-                        Get a demo
-                      </Button>
-                      <Link to="/signup" onClick={closeMobileMenu}>
-                        <Button 
-                          className="w-full py-3 text-lg font-medium bg-primary hover:bg-primary-hover"
-                        >
-                          Sign up
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Footer */}
-                  <div className="p-6 border-t bg-muted/20">
-                    <p className="text-sm text-muted-foreground text-center">
-                      Join 300,000+ teams worldwide
-                    </p>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {!isMenuOpen ? (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              ) : (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t border-border">
+              <Link to="/product" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Product
+              </Link>
+              <Link to="/solutions" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Solutions
+              </Link>
+              <Link to="/resources" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Resources
+              </Link>
+              <Link to="/company" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Company
+              </Link>
+              <Link to="/enterprise" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Enterprise
+              </Link>
+              <Link to="/pricing" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-gray-50 rounded-md">
+                Pricing
+              </Link>
+              <div className="pt-4 pb-3 border-t border-border">
+                <div className="flex flex-col space-y-3 px-3">
+                  <Link to="/login" onClick={closeMenu}>
+                    <Button variant="ghost" className="justify-start text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-primary/5 w-full">
+                      Login
+                    </Button>
+                  </Link>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-black hover:border-gray-600 hover:bg-gray-100 transition-all duration-300 hover:shadow-md"
+                  >
+                    Get a demo
+                  </Button>
+                  <Link to="/signup" onClick={closeMenu}>
+                    <Button 
+                      size="sm" 
+                      className="bg-black hover:bg-gray-800 text-white transition-all duration-300 hover:shadow-lg w-full"
+                    >
+                      Sign up
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
