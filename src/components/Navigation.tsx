@@ -10,62 +10,62 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border animate-slide-in-left">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
       <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo - Always visible on the left */}
           <div className="flex items-center">
-            <Link to="/" className="font-bold text-xl text-foreground hover:text-primary transition-colors duration-300 flex-shrink-0">
+            <Link to="/" className="font-bold text-xl text-foreground hover:text-primary flex-shrink-0">
               DataFlow
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/product" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/product" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Product
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
-            <Link to="/solutions" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/solutions" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Solutions
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
-            <Link to="/resources" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/resources" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Resources
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
-            <Link to="/company" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/company" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Company
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
-            <Link to="/enterprise" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/enterprise" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Enterprise
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
-            <Link to="/pricing" className="nav-link text-muted-foreground hover:text-foreground transition-colors relative group">
+            <Link to="/pricing" className="nav-link text-muted-foreground hover:text-foreground relative group">
               Pricing
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full"></span>
             </Link>
           </div>
           
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link to="/login">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-primary/5">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-primary/5">
                 Login
               </Button>
             </Link>
             <Button 
               variant="outline" 
               size="sm" 
-              className="border-black hover:border-gray-600 hover:bg-gray-100 transition-all duration-300 hover:shadow-md"
+              className="border-black hover:border-gray-600 hover:bg-gray-100"
             >
               Get a demo
             </Button>
             <Link to="/signup">
               <Button 
                 size="sm" 
-                className="bg-black hover:bg-gray-800 text-white transition-all duration-300 hover:shadow-lg hover:scale-105"
+                className="bg-black hover:bg-gray-800 text-white"
               >
                 Sign up
               </Button>
@@ -118,21 +118,21 @@ const Navigation = () => {
               <div className="pt-4 pb-3 border-t border-border">
                 <div className="flex flex-col space-y-3 px-3">
                   <Link to="/login" onClick={closeMenu}>
-                    <Button variant="ghost" className="justify-start text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-primary/5 w-full">
+                    <Button variant="ghost" className="justify-start text-muted-foreground hover:text-foreground hover:bg-primary/5 w-full">
                       Login
                     </Button>
                   </Link>
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="border-black hover:border-gray-600 hover:bg-gray-100 transition-all duration-300 hover:shadow-md"
+                    className="border-black hover:border-gray-600 hover:bg-gray-100"
                   >
                     Get a demo
                   </Button>
                   <Link to="/signup" onClick={closeMenu}>
                     <Button 
                       size="sm" 
-                      className="bg-black hover:bg-gray-800 text-white transition-all duration-300 hover:shadow-lg w-full"
+                      className="bg-black hover:bg-gray-800 text-white w-full"
                     >
                       Sign up
                     </Button>
